@@ -1,96 +1,117 @@
-Mac Miller Lyric Analysis ETL Pipeline
+🎶Album Lyrics Analysis ETL Pipeline
 
-This project is an end-to-end data engineering pipeline that extracts, processes, and analyzes song lyrics from Mac Miller's albums.
-The pipeline leverages a modern data stack to ingest data from public APIs, transform it in the cloud using AWS, and load it into a Snowflake data warehouse for analytics.
+This project is an **end-to-end data engineering pipeline** that extracts, processes, and analyzes song lyrics from **Mac Miller’s albums**.
 
-🏛️ Cloud Architecture
-The pipeline is designed with a clear separation of concerns, moving data through distinct zones in a cloud data lake environment.
-The complete workflow diagram can be found in the architecture/ directory.
+The pipeline leverages a **modern data stack** to:
 
+* Ingest lyrics from public APIs
+* Transform them in the cloud with **AWS Glue & PySpark**
+* Load into **Snowflake** for analytics and future visualization
 
-Architecture Breakdown
-Data Extraction (Local): A Python script is run locally to connect to the Spotify API (for track/album metadata) and the Genius API (for lyrics URLs). It then scrapes the raw lyrics text.
+---
 
-S3 Data Lake (Landing Zone): The raw, unstructured data from the script is uploaded as .jsonl files to a raw zone (/raw) in an AWS S3 bucket. This serves as the permanent, immutable source of truth.
+## 🏛️ Cloud Architecture
 
-Schema Discovery (Glue Data Catalog): An AWS Glue Crawler automatically scans the raw data in S3. It infers the schema and creates a metadata table in the AWS Glue Data Catalog, making the data queryable.
+The pipeline is built with **layered zones** in an AWS data lake and integrates with Snowflake for scalable analytics.
 
-ETL Transformation (AWS Glue): An AWS Glue ETL job, written in PySpark, reads the raw data from the catalog. It performs a series of cleaning transformations (e.g., removing headers, punctuation, and extra whitespace) on the raw lyrics.
+📌 A full architecture diagram is available in [`architecture/lyrics_etl.png`](architecture/lyrics_etl.png).
 
-S3 Data Lake (Processed Zone): The Glue job writes the clean, structured data to a processed zone (/processed) in the S3 bucket. The data is saved in the columnar Parquet format, which is highly optimized for analytics.
+Workflow Overview:
 
-Data Warehousing (Snowflake): The clean Parquet data is efficiently loaded from the S3 processed zone into a final analytics table in Snowflake using the COPY command, making it available for high-performance SQL queries.
+1. **Data Extraction (Local)** – Python script fetches track metadata (Spotify API) & lyrics (Genius API).
+2. **Landing Zone (S3 Raw)** – Raw JSONL files uploaded to AWS S3 `/raw`.
+3. **Schema Discovery (Glue Crawler)** – Infers schema & catalogs data.
+4. **ETL Transformation (AWS Glue)** – PySpark cleaning: remove headers, punctuation, extra whitespace.
+5. **Processed Zone (S3)** – Outputs structured **Parquet files** to `/processed`.
+6. **Data Warehouse (Snowflake)** – Loads Parquet into analytics tables for **SQL queries**.
 
+---
 
-🛠️ Tech Stack
+## 🛠️ Tech Stack
 
-Data Ingestion - Python, requests, BeautifulSoup4
+* Data Ingestion → Python, Requests, BeautifulSoup4
+* Cloud → AWS (S3, Glue, IAM)
+* ETL & Catalog → AWS Glue Crawlers + PySpark ETL Jobs
+* Data Warehouse → Snowflake
+* BI (Future) → Amazon QuickSight, Tableau
 
-Cloud Provider - AWS (Amazon Web Services)
-
-Data Lake - AWS S3
-
-ETL & Catalog - AWS Glue (Crawlers, PySpark ETL Jobs)
-
-Data Warehouse - Snowflake
-
-BI (Future) - Amazon Quicksight, Tableau
+---
 
 ## 📁 Project Structure
+
+```bash
 /
-├── architecture/
-│ └── lyrics_etl.png
-├── data/
-│ └── ...
-├── docs/
-│ ├── glue_crawler_setup.md
-│ ├── iam_roles_setup.md
-│ └── snowflake_s3_integration.md
-├── glue_jobs/
-│ └── clean_lyrics.py
-├── scripts/
-│ └── 1_fetch_lyrics.py
-├── snowflake/
-│ ├── 1_setup_integration.sql
-│ └── 2_load_data.sql
-├── .env.example
-├── .gitignore
-├── requirements.txt
+├── architecture/               # Architecture diagram
+│   └── lyrics_etl.png
+├── data/                       # Raw & processed data (local)
+├── docs/                       # Setup guides
+│   ├── glue_crawler_setup.md
+│   ├── iam_roles_setup.md
+│   └── snowflake_s3_integration.md
+├── glue_jobs/                  # PySpark ETL scripts
+│   └── clean_lyrics.py
+├── scripts/                    # Local ingestion scripts
+│   └── 1_fetch_lyrics.py
+├── snowflake/                  # SQL scripts for warehouse
+│   ├── 1_setup_integration.sql
+│   └── 2_load_data.sql
+├── .env.example                # Env variable template
+├── requirements.txt            # Python dependencies
 └── README.md
+```
 
-🚀 Setup and Usage
-1. Prerequisites
+---
 
-- Python 3.8+
-- An AWS account with appropriate IAM permissions for S3 and Glue.
-- A Snowflake account.
-- API credentials from Spotify for Developers and Genius API.
+## 🚀 Setup & Usage
 
-2. Local Setup
-- Clone the repository and install the required Python packages.
-- git clone <your-repository-url>
-- cd music-sentiment-pipeline
-- pip install -r requirements.txt
+### 1️⃣ Prerequisites
 
+* Python **3.8+**
+* AWS account with **S3 & Glue IAM permissions**
+* Snowflake account
+* API credentials: **Spotify Developer**, **Genius API**
 
-3. Configure Environment Variables
-- Create a .env file in the project root by copying the template, then add your API keys: cp .env.example .env
-- Now, edit the .env file with your secret credentials.
+### 2️⃣ Local Setup
 
-  
-4. Running the Pipeline
-Run Local Script: Execute scripts/1_fetch_lyrics.py to generate the raw .jsonl files.
-Upload to S3: Upload the contents of the data/ folder to your S3 raw zone.
-Run Glue Crawler: Run your Glue Crawler to catalog the raw data.
-Run Glue ETL Job: Execute the Glue job using the script from glue_jobs/clean_lyrics.py.
-Load into Snowflake: Run the SQL scripts in the snowflake/ directory in order (1_setup_integration.sql then 2_load_data.sql) to load the data.
+```bash
+git clone <your-repository-url>
+cd music-sentiment-pipeline
+pip install -r requirements.txt
+```
 
-📄 Detailed Documentation
-For detailed setup instructions on the cloud components, please refer to the documents in the docs/ directory:
-iam_roles_setup.md: A guide for configuring the necessary IAM roles and permissions.
-glue_crawler_setup.md: Instructions for setting up the AWS Glue Crawler.
-snowflake_s3_integration.md: Steps for securely integrating Snowflake with your S3 bucket.
-🔮 Future Work
-Emotion Analysis: Implement a second Glue job to perform emotion classification on the cleaned lyrics.
-Orchestration: Automate the entire pipeline using AWS Step Functions or Apache Airflow.
-Visualization: Connect a BI tool like Amazon Quicksight to the Snowflake table to build interactive dashboards.
+### 3️⃣ Configure Environment Variables
+
+```bash
+cp .env.example .env
+# Fill in your API keys and secrets
+```
+
+### 4️⃣ Run the Pipeline
+
+1. Run local ingestion → `python scripts/1_fetch_lyrics.py`
+2. Upload raw files → S3 `/raw` zone
+3. Run Glue Crawler → catalog schema
+4. Run Glue ETL job → `glue_jobs/clean_lyrics.py`
+5. Load to Snowflake → run SQL scripts in `snowflake/`
+
+---
+
+## 📄 Documentation
+
+* [`docs/iam_roles_setup.md`](docs/iam_roles_setup.md) → IAM roles & permissions
+* [`docs/glue_crawler_setup.md`](docs/glue_crawler_setup.md) → AWS Glue setup
+* [`docs/snowflake_s3_integration.md`](docs/snowflake_s3_integration.md) → Snowflake ↔ S3 integration
+
+---
+
+## 🔮 Future Work
+
+* **Emotion Analysis** → Add NLP pipeline (e.g., emotion classification)
+* **Orchestration** → Automate with AWS Step Functions / Apache Airflow
+* **Visualization** → BI dashboards with QuickSight or Tableau
+
+---
+
+👉 This formatting makes it **resume-friendly**, **GitHub-ready**, and easy for reviewers to scan.
+
+Do you also want me to **add badges** (like Python version, AWS, Snowflake, License, GitHub stars) at the top for a more professional GitHub look?
