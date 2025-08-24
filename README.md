@@ -106,12 +106,6 @@ cp .env.example .env
 
 ## 🔮 Future Work
 
-* **Emotion Analysis** → Add NLP pipeline (e.g., emotion classification)
+* **Emotion Analysis** → emotion classification using NLP/LLMs
 * **Orchestration** → Automate with AWS Step Functions / Apache Airflow
-* **Visualization** → BI dashboards with QuickSight or Tableau
-
----
-
-👉 This formatting makes it **resume-friendly**, **GitHub-ready**, and easy for reviewers to scan.
-
-Do you also want me to **add badges** (like Python version, AWS, Snowflake, License, GitHub stars) at the top for a more professional GitHub look?
+* **Visualization** → BI dashboards
