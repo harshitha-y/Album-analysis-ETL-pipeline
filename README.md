@@ -4,7 +4,8 @@ This project is an **end-to-end data engineering pipeline** that extracts, proce
 
 The pipeline leverages a **modern data stack** to:
 
-* Ingest lyrics from public APIs
+* Ingest lyrics from public APIs (Spotify and Genius)
+* Store raw data in S3
 * Transform them in the cloud with **AWS Glue & PySpark**
 * Load into **Snowflake** for analytics and future visualization
 
