@@ -1,4 +1,4 @@
-🎶Album Lyrics Analysis ETL Pipeline
+**🎶Album Lyrics Analysis ETL Pipeline**
 
 This project is an **end-to-end data engineering pipeline** that extracts, processes, and analyzes song lyrics from **Mac Miller’s albums**.
 
