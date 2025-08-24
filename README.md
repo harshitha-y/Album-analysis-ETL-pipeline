@@ -1,5 +1,7 @@
 Mac Miller Lyric Analysis ETL Pipeline
+
 This project is an end-to-end data engineering pipeline that extracts, processes, and analyzes song lyrics from Mac Miller's albums. The pipeline leverages a modern data stack to ingest data from public APIs, transform it in the cloud using AWS, and load it into a Snowflake data warehouse for analytics.
+
 🏛️ Cloud Architecture
 The pipeline is designed with a clear separation of concerns, moving data through distinct zones in a cloud data lake environment. The complete workflow diagram can be found in the architecture/ directory.
 Architecture Breakdown
