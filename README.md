@@ -75,7 +75,7 @@ Workflow Overview:
 ### 2️⃣ Local Setup
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/harshitha-y/Album-analysis-ETL-pipeline.git
 cd music-sentiment-pipeline
 pip install -r requirements.txt
 ```
