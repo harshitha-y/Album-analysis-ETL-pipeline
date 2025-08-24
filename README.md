@@ -77,7 +77,6 @@ Workflow Overview:
 ```bash
 git clone https://github.com/harshitha-y/Album-analysis-ETL-pipeline.git
 cd music-sentiment-pipeline
-pip install -r requirements.txt
 ```
 
 ### 3️⃣ Configure Environment Variables
