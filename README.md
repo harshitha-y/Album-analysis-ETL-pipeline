@@ -36,28 +36,27 @@ Data Warehouse - Snowflake
 
 BI (Future) - Amazon Quicksight, Tableau
 
-📁 Project Structure
+## 📁 Project Structure
 /
 ├── architecture/
-│   └── lyrics_etl.png              # Workflow diagram of the pipeline
+│ └── lyrics_etl.png
 ├── data/
-│   └── ...                         # Directory for raw output data (.jsonl files)
+│ └── ...
 ├── docs/
-│   ├── glue_crawler_setup.md       # Instructions for setting up the Glue Crawler
-│   ├── iam_roles_setup.md          # Guide for configuring necessary IAM permissions
-│   └── snowflake_s3_integration.md # Steps for integrating Snowflake with S3
+│ ├── glue_crawler_setup.md
+│ ├── iam_roles_setup.md
+│ └── snowflake_s3_integration.md
 ├── glue_jobs/
-│   └── clean_lyrics.py             # PySpark script for the AWS Glue cleaning job
+│ └── clean_lyrics.py
 ├── scripts/
-│   └── 1_fetch_lyrics.py           # Local Python script to fetch and scrape raw lyrics
+│ └── 1_fetch_lyrics.py
 ├── snowflake/
-│   ├── 1_setup_integration.sql     # SQL for creating the S3 Stage and Integration
-│   └── 2_load_data.sql             # SQL for creating the final table and loading data
+│ ├── 1_setup_integration.sql
+│ └── 2_load_data.sql
 ├── .env.example
 ├── .gitignore
 ├── requirements.txt
 └── README.md
-
 
 🚀 Setup and Usage
 1. Prerequisites
