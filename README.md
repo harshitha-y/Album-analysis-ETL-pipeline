@@ -83,7 +83,7 @@ cd music-sentiment-pipeline
 
 ```bash
 cp .env.example .env
-# Fill in your API keys and secrets
+# Fill in API keys and secrets
 ```
 
 ### 4️⃣ Run the Pipeline
